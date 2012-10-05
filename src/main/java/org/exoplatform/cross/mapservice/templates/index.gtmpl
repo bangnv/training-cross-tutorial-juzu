@@ -1,0 +1,23 @@
+#{param name=location/}
+#{param name=mapURL/}
+<script>
+function submitLocation(location) {
+    $('#map').jzAjax({
+        url: "Controller.getMapURL()",
+        data: {"location": location}
+    }).done(function(data) {
+        $('#map > iframe').attr('src', data.mapURL);
+    });
+    return false;
+}
+</script>
+Location :
+<form onsubmit="return submitLocation(this.location.value)">
+    <input type="text" name="location" value="${location}"/>
+    <input type="submit"/>
+</form>
+<br/>
+<div id="map">
+<iframe width="70%" height="70%" src='https://maps.google.fr/maps?f=q&source=s_q&hl=en&geocode=&q=hanoi&aq=&t=m&ie=UTF8&hq=&hnear=hanoi&z=12&output=embed'>
+</div>
+
