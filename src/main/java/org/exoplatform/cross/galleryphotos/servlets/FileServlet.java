@@ -81,9 +81,12 @@ public class FileServlet extends HttpServlet {
 		} finally {
 			model.close();
 		}
-
-		// resp.setContentType("text/html");
-
+		StringBuffer buf = new StringBuffer();
+		buf.append(req.getScheme()).append("://");
+		buf.append(req.getServerName()).append(":");
+		buf.append(req.getServerPort());
+		buf.append("/portal/classic/home/juzu-gellery");
+		resp.sendRedirect(buf.toString());
 	}
 
 }

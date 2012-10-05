@@ -38,6 +38,7 @@ public class Controller extends juzu.Controller {
 
 	// juzu.template.Template index;
 
+	
 	@View
 	public void index() {
 		index.with().sendFileURL(getSendFileURL()).render();
@@ -58,12 +59,7 @@ public class Controller extends juzu.Controller {
 	    b.append(httpContext.getServerPort());
 	    b.append(temp+ "/sendFile");
 		return b.toString();
-//		StringBuilder b = new StringBuilder();
-//		b.append(httpContext.getScheme()).append("://");
-//		b.append(httpContext.getServerName()).append(":");
-//		b.append(httpContext.getServerPort());
-//		b.append("/fileServlet/sendFile");
-//		return b.toString();
+
 	}
 
 }
