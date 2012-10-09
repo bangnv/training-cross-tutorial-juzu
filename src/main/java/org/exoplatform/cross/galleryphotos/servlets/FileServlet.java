@@ -1,9 +1,14 @@
 package org.exoplatform.cross.galleryphotos.servlets;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
-import javax.portlet.PortletException;
+import javax.jcr.Node;
+import javax.jcr.NodeIterator;
+import javax.jcr.Session;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -13,55 +18,38 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.portlet.PortletFileUpload;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.chromattic.api.Chromattic;
-import org.chromattic.api.ChromatticBuilder;
-import org.exoplatform.cross.galleryphotos.GaleryContext;
-import org.exoplatform.cross.galleryphotos.model.Content;
-import org.exoplatform.cross.galleryphotos.model.CurrentRepositoryLifeCycle;
-import org.exoplatform.cross.galleryphotos.model.Directory;
-import org.exoplatform.cross.galleryphotos.model.Document;
+import org.exoplatform.container.PortalContainer;
 import org.exoplatform.cross.galleryphotos.model.File;
+import org.exoplatform.portal.webui.util.Util;
+import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 
 public class FileServlet extends HttpServlet {
-	private Chromattic chromattic;
-	/** . */
-	private String workspaceName;
-	// HttpServlet is Serializable so, we should have a serialVersionUID
-	private static final long serialVersionUID = 1L;
+
+	private String baseURI = null;
 
 	@Override
-	public void init() throws ServletException {
-		workspaceName = "portal-system";
-		ChromatticBuilder builder = ChromatticBuilder.create();
-		builder.add(Directory.class);
-		builder.add(Content.class);
-		builder.add(Document.class);
-		builder.add(File.class);
-		builder.setOptionValue(ChromatticBuilder.SESSION_LIFECYCLE_CLASSNAME,
-				CurrentRepositoryLifeCycle.class.getName());
-		builder.setOptionValue(ChromatticBuilder.CREATE_ROOT_NODE, true);
-		builder.setOptionValue(ChromatticBuilder.ROOT_NODE_PATH, "/logomattic");
-		chromattic = builder.build();
-	}
-
-	public void doGet(HttpServletRequest request, HttpServletResponse response) {
-		System.out.println("do Get");
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		doPost(request, response);
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		GaleryContext model = new GaleryContext(chromattic, workspaceName, req,
-				resp);
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		if (baseURI == null) {
+			baseURI = request.getScheme() + "://" + request.getServerName()
+					+ ":" + String.format("%s", request.getServerPort());
+		}
 		try {
-			if (ServletFileUpload.isMultipartContent(req)) {
+			if (ServletFileUpload.isMultipartContent(request)) {
 				FileItem image = null;
 				try {
 					FileItemFactory factory = new DiskFileItemFactory();
 					ServletFileUpload fu = new ServletFileUpload(factory);
-					List<FileItem> list = fu.parseRequest(req);
+					List<FileItem> list = fu.parseRequest(request);
 					for (FileItem item : list) {
 						if (item.getFieldName().equals("uploadedimage")) {
 							if (item.getContentType().startsWith("image/")) {
@@ -75,18 +63,59 @@ public class FileServlet extends HttpServlet {
 							e);
 				}
 				if (image != null) {
-					model.save(image);
+					storeFile(image);
 				}
 			}
 		} finally {
-			model.close();
 		}
-		StringBuffer buf = new StringBuffer();
-		buf.append(req.getScheme()).append("://");
-		buf.append(req.getServerName()).append(":");
-		buf.append(req.getServerPort());
-		buf.append("/portal/classic/home/juzu-gellery");
-		resp.sendRedirect(buf.toString());
+		StringBuffer buff = new StringBuffer();
+		buff.append(baseURI);
+		buff.append("/portal/classic/home/juzu-gellery");
+		response.sendRedirect(buff.toString());
 	}
 
+	private void storeFile(FileItem item) {
+		String filename = item.getName();
+		RepositoryService repositoryService = (RepositoryService) PortalContainer
+				.getInstance().getComponentInstanceOfType(
+						RepositoryService.class);
+		NodeHierarchyCreator nodeHierarchyCreator = (NodeHierarchyCreator) PortalContainer
+				.getInstance().getComponentInstanceOfType(
+						NodeHierarchyCreator.class);
+
+		SessionProvider sessionProvider = SessionProvider
+				.createSystemProvider();
+		try {
+			// get info
+			Session session = sessionProvider.getSession("portal-system",
+					repositoryService.getCurrentRepository());
+
+			Node rootNode = session.getRootNode();
+			// Node homeNode = rootNode.getNode("Private");
+
+			Node docNode;
+			if (!rootNode.hasNode("Pictures")) {
+				rootNode.addNode("Pictures", "nt:folder");
+				rootNode.save();
+			}
+			docNode = rootNode.getNode("Pictures");
+			if (!docNode.hasNode(filename)) {
+
+				Node fileNode = docNode.addNode(filename, "nt:file");
+				Node jcrContent = fileNode
+						.addNode("jcr:content", "nt:resource");
+				jcrContent.setProperty("jcr:data", item.getInputStream());
+				jcrContent.setProperty("jcr:lastModified",
+						Calendar.getInstance());
+				jcrContent.setProperty("jcr:encoding", "UTF-8");
+				jcrContent.setProperty("jcr:mimeType", item.getContentType());
+				docNode.save();
+				session.save();
+			}
+		} catch (Exception e) {
+			System.out.println("JCR::" + e.getMessage());
+		} finally {
+			sessionProvider.close();
+		}
+	}
 }

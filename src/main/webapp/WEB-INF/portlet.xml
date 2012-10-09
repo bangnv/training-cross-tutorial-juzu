@@ -13,8 +13,8 @@
 		</init-param>
 		<init-param>
 			<name>juzu.src_path</name>
-			<value>/home/bangnv/workspaces/crossTeam/training-cross-tutorial-juzu/src/main/java</value>
-		</init-param>
+			<value>/home/bangnv/workspace1/training-string-rest-portlet-juzu/src/main/java</value>
+		</init-param> 
 		<init-param>
 			<name>juzu.inject</name>
 			<value>weld</value>
@@ -39,7 +39,7 @@
 		</init-param>
 		<init-param>
 			<name>juzu.src_path</name>
-			<value>/home/bangnv/workspaces/crossTeam/training-cross-tutorial-juzu/src/main/java</value>
+			<value>/home/bangnv/workspace1/training-string-rest-portlet-juzu/src/main/java</value>
 		</init-param>
 		<init-param>
 			<name>juzu.inject</name>
@@ -65,7 +65,7 @@
 		</init-param>
 		<init-param>
 			<name>juzu.src_path</name>
-			<value>/home/bangnv/workspaces/crossTeam/training-cross-tutorial-juzu/src/main/java</value>
+			<value>/home/bangnv/workspace1/training-string-rest-portlet-juzu/src/main/java</value>
 		</init-param>
 		<init-param>
 			<name>juzu.inject</name>

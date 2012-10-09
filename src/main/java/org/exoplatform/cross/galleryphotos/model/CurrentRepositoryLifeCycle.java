@@ -19,12 +19,13 @@
 
 package org.exoplatform.cross.galleryphotos.model;
 
-import org.chromattic.spi.jcr.SessionLifeCycle;
-
 import javax.jcr.Credentials;
 import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
+
+import org.chromattic.spi.jcr.SessionLifeCycle;
+
 import java.lang.reflect.Method;
 
 /**

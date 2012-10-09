@@ -1,0 +1,37 @@
+ #{param name=files/}
+ 
+ <% if (files!=null)    { %>
+<table class="table">    
+<tr>
+<%
+files.each {
+	file -> %> 
+	<td width="50px">
+		<div style="text-align: center;"> <img class="imgGalerie" width="150px" heigth="150px"  src="<%=file.getPublicUrl()%>" alt="" />
+		</div>
+		<br>
+		<div>	<a href="#" style="color:blue" id="delete-button"  pathNode="${file.getPathNode()}">Delete</a>
+	</div>	
+		</td>
+	<% } %>
+	</tr>
+</table>
+	<% }%>
+
+<script>
+$('#delete-button').on("click", function() {
+	var pathNode = $(this).attr('pathNode');
+	$.ajax({
+	  url: jzDeleteFile,
+	  data: {"pathNode": pathNode},
+	  success:function(response){
+$('#documents').load(jzFiles, function () {
+  });
+	  }
+	});
+  });
+
+</script>
+
+
+	  

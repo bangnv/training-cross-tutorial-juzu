@@ -16,50 +16,58 @@
  */
 package org.exoplatform.cross.galleryphotos;
 
-import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import juzu.Action;
-import juzu.Param;
 import juzu.Path;
 import juzu.Resource;
+import juzu.Response;
+import juzu.SessionScoped;
 import juzu.View;
+
+import org.exoplatform.cross.galleryphotos.model.DocumentsData;
+import org.exoplatform.cross.galleryphotos.model.File;
 
 /**
  * Created by The eXo Platform SAS Author : Nguyen Viet Bang
  * bangnv@exoplatform.com Oct 3, 2012
  */
+@SessionScoped
 public class Controller extends juzu.Controller {
+
+	// @Inject
+	// DocumentsData documentsData;
 
 	@Inject
 	@Path("index.gtmpl")
-	org.exoplatform.cross.galleryphotos.templates.index index;
+	juzu.template.Template index;
 
-	// juzu.template.Template index;
+	@Inject
+	@Path("documents.gtmpl")
+	org.exoplatform.cross.galleryphotos.templates.documents documents;
 
-	
 	@View
 	public void index() {
-		index.with().sendFileURL(getSendFileURL()).render();
-		// index.render();
+		index.render();
+	}
+
+	@Resource
+	public void getDocuments() {
+		List<File> files = DocumentsData.getInstance().getNodes();
+		if (files != null && files.size() > 0) {
+			files = DocumentsData.getInstance().getNodes();
+		} else
+			files = new ArrayList<File>();
+		documents.with().files(files).render();
 	}
 
 	@Action
-	@Resource
-	public void uploadFile() {
-		System.out.println("vao day");
-	}
-
-	private String getSendFileURL() {
-		StringBuilder b = new StringBuilder();
-	    String temp = httpContext.getContextPath();
-	    b.append(httpContext.getScheme()).append("://");
-	    b.append(httpContext.getServerName()).append(":");
-	    b.append(httpContext.getServerPort());
-	    b.append(temp+ "/sendFile");
-		return b.toString();
-
+	public void deleteFile(String pathNode) {
+		DocumentsData.getInstance().deleteNode(pathNode);
+		index.render();
 	}
 
 }

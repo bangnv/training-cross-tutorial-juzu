@@ -1,10 +1,16 @@
+<div id="documents" style="text-align: center;">
+ 
+</div>
 
-#{param name=sendFileURL/}
 
+<script>
+var jzDeleteFile = "@{deleteFile()}";
+var jzFiles = "@{getDocuments()}";
+</script>
 Gallery photos
 <div class="upload-logo">
 <form enctype="multipart/form-data"
-  action="${sendFileURL}"  method="POST">
+  action="/training-cross-tutorial-juzu/sendFile"  method="POST">
   <input type="hidden" name="MAX_FILE_SIZE" value="100000" /> <label
     for="uploadimage">Add New Logo</label> <input id="uploadimage"
     name="uploadedimage" type="file" /> <input type="submit"
