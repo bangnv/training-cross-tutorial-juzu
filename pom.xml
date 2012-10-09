@@ -14,8 +14,8 @@
 		<maven.compiler.target>1.6</maven.compiler.target>
 		<maven.compiler.source>1.6</maven.compiler.source>
 		<version.slf4j>1.5.8</version.slf4j>
-		<version.chromattic>1.1.4</version.chromattic>
 		<org.gatein.pc.version>2.3.2-GA</org.gatein.pc.version>
+		<version.chromattic>1.1.4</version.chromattic>
 	</properties>
 
 	<dependencies>
@@ -26,8 +26,6 @@
 			<version>3.8.2</version>
 			<scope>test</scope>
 		</dependency>
-
-		
 
 		<!-- Application dependencies -->
 		<dependency>
@@ -40,6 +38,7 @@
 			<artifactId>juzu-plugins-portlet</artifactId>
 			<version>0.6.0-SNAPSHOT</version>
 		</dependency>
+
 
 		<!-- <dependency> -->
 		<!-- <groupId>org.logomattic</groupId> -->
@@ -75,6 +74,14 @@
 			<groupId>org.gatein.pc</groupId>
 			<artifactId>pc-portlet</artifactId>
 			<version>${org.gatein.pc.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.exoplatform.jcr</groupId>
+			<artifactId>exo.jcr.component.ext</artifactId>
+			<version>1.14.6-GA</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -119,12 +126,13 @@
 			<version>${version.chromattic}</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>${version.slf4j}</version>
-		</dependency>
 
+		<dependency>
+			<groupId>org.exoplatform.portal</groupId>
+			<artifactId>exo.portal.webui.portal</artifactId>
+			<version>3.4.0-GA-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
