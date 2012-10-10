@@ -3,57 +3,6 @@
 	version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd
    http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd">
-	<portlet>
-		<portlet-name>RestservicePortlet</portlet-name>
-		<display-name xml:lang="EN">String Rest Service</display-name>
-		<portlet-class>org.exoplatform.cross.restservice.RestservicePortlet</portlet-class>
-		<init-param>
-			<name>juzu.run_mode</name>
-			<value>dev</value>
-		</init-param>
-		<init-param>
-			<name>juzu.src_path</name>
-			<value>/home/bangnv/workspace1/training-string-rest-portlet-juzu/src/main/java</value>
-		</init-param> 
-		<init-param>
-			<name>juzu.inject</name>
-			<value>weld</value>
-			<!-- <value>spring</value> -->
-		</init-param>
-		<supports>
-			<mime-type>text/html</mime-type>
-		</supports>
-		<portlet-info>
-			<title>Rest Service</title>
-			<keywords>juzu,tutorial</keywords>
-		</portlet-info>
-	</portlet>
-
-	<portlet>
-		<portlet-name>GoogleMap</portlet-name>
-		<display-name xml:lang="EN">Google Map Search</display-name>
-		<portlet-class>org.exoplatform.cross.mapservice.MapservicePortlet</portlet-class>
-		<init-param>
-			<name>juzu.run_mode</name>
-			<value>dev</value>
-		</init-param>
-		<init-param>
-			<name>juzu.src_path</name>
-			<value>/home/bangnv/workspace1/training-string-rest-portlet-juzu/src/main/java</value>
-		</init-param>
-		<init-param>
-			<name>juzu.inject</name>
-			<value>weld</value>
-			<!-- <value>spring</value> -->
-		</init-param>
-		<supports>
-			<mime-type>text/html</mime-type>
-		</supports>
-		<portlet-info>
-			<title>Google Map Search Portlet</title>
-			<keywords>juzu,tutorial</keywords>
-		</portlet-info>
-	</portlet>
 
 	<portlet>
 		<portlet-name>GalleryPhotos</portlet-name>
@@ -65,7 +14,7 @@
 		</init-param>
 		<init-param>
 			<name>juzu.src_path</name>
-			<value>/home/bangnv/workspace1/training-string-rest-portlet-juzu/src/main/java</value>
+			<value>/home/bangnv/workspace1/training-cross-tutorial-juzu/src/main/java</value>
 		</init-param>
 		<init-param>
 			<name>juzu.inject</name>

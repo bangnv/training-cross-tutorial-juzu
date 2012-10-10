@@ -11,10 +11,11 @@
 package org.exoplatform.cross.galleryphotos;
 
 import juzu.Application;
-import juzu.plugin.portlet.Portlet;
 import juzu.plugin.asset.Assets;
 import juzu.plugin.asset.Script;
-import juzu.asset.AssetLocation;
 import juzu.plugin.binding.Binding;
 import juzu.plugin.binding.Bindings;
-import  org.exoplatform.cross.galleryphotos.model.GateInMetaProvider;
+import juzu.plugin.portlet.Portlet;
+import juzu.asset.AssetLocation;	
+import org.exoplatform.cross.galleryphotos.model.GateInMetaProvider;
+
